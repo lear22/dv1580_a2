@@ -11,7 +11,7 @@ list: mmanager
 
 # Compiles the test_linked_list as a separate executable
 test_linked_list: mmanager
-	gcc -Wall -fPIC test_linked_list.c -o test_linked_list -I. -L. -lmemory_manager -lpthread
+	gcc -Wall -fPIC test_linked_list.c linked_list.o -o test_linked_list -I. -L. -lmemory_manager -lpthread -lm
 
 # Default build: builds both the memory manager and linked list application
 all: mmanager list test_linked_list
