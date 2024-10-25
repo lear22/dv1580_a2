@@ -1,32 +1,26 @@
-# Compiler and flags
 CC = gcc
 CFLAGS = -Wall -fPIC
-LDFLAGS = -shared
-LINK_FLAGS = -L. -lmemory_manager
+LDFLAGS = -L. -lmemory_manager
 
-# File paths and names
-MEMORY_MANAGER_SRC = memory_manager.c
-MEMORY_MANAGER_OBJ = memory_manager.o
-MEMORY_MANAGER_LIB = libmemory_manager.so
-LINKED_LIST_SRC = linked_list.c
-LINKED_LIST_APP = linked_list_app
+# Target to build the memory manager as a dynamic library
+mmanager: memory_manager.o
+	$(CC) -shared -o libmemory_manager.so memory_manager.o
 
-# Targets
+# Target to build the linked list application
+list: linked_list.o
+	$(CC) $(CFLAGS) linked_list.c -o linked_list_app -I. $(LDFLAGS)
 
-# Compile memory manager as a dynamic library
-mmanager: $(MEMORY_MANAGER_SRC)
-	$(CC) $(CFLAGS) -c $(MEMORY_MANAGER_SRC) -o $(MEMORY_MANAGER_OBJ)
-	$(CC) $(LDFLAGS) -o $(MEMORY_MANAGER_LIB) $(MEMORY_MANAGER_OBJ)
-
-# Compile linked list application and link with the memory manager library
-list: mmanager $(LINKED_LIST_SRC)
-	$(CC) $(CFLAGS) $(LINKED_LIST_SRC) -o $(LINKED_LIST_APP) -I. $(LINK_FLAGS)
-
-# Build both memory manager library and linked list application
+# Build all: memory manager and linked list application
 all: mmanager list
+
+# Object files for memory_manager
+memory_manager.o: memory_manager.c memory_manager.h
+	$(CC) $(CFLAGS) -c memory_manager.c
+
+# Object files for linked_list
+linked_list.o: linked_list.c linked_list.h
+	$(CC) $(CFLAGS) -c linked_list.c
 
 # Clean up generated files
 clean:
-	rm -f $(MEMORY_MANAGER_OBJ) $(MEMORY_MANAGER_LIB) $(LINKED_LIST_APP)
-
-.PHONY: all mmanager list clean
+	rm -f *.o *.so linked_list_app
