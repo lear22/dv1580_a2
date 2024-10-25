@@ -29,15 +29,15 @@ $(SHARED_LIB): memory_manager.o
 	$(CC) -shared -o $@ $^
 
 # Build linked list application
-$(EXEC_LINKED_LIST_APP): main.o linked_list.o
+$(EXEC_LINKED_LIST_APP): main.o linked_list.o $(SHARED_LIB)
 	$(CC) -o $@ $^ -I. -L. -lmemory_manager $(LIBS)
 
 # Build test linked list
-$(EXEC_TEST_LINKED_LIST): test_linked_list.o linked_list.o
+$(EXEC_TEST_LINKED_LIST): test_linked_list.o linked_list.o $(SHARED_LIB)
 	$(CC) -o $@ $^ -I. -L. -lmemory_manager $(LIBS)
 
 # Build test memory manager
-$(EXEC_TEST_MEMORY_MANAGER): test_memory_manager.o memory_manager.o
+$(EXEC_TEST_MEMORY_MANAGER): test_memory_manager.o memory_manager.o $(SHARED_LIB)
 	$(CC) -o $@ $^ $(LIBS)
 
 # Compile source files into object files
@@ -49,3 +49,4 @@ clean:
 	rm -f $(OBJS) $(EXEC_LINKED_LIST_APP) $(EXEC_TEST_LINKED_LIST) $(EXEC_TEST_MEMORY_MANAGER) $(SHARED_LIB)
 
 .PHONY: all clean
+
