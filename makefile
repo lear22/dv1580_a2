@@ -6,11 +6,11 @@ LDFLAGS = -L. -lmemory_manager
 mmanager: memory_manager.o
 	$(CC) -shared -o libmemory_manager.so memory_manager.o
 
-# Target to build the linked list application
-list: linked_list.o
-	$(CC) $(CFLAGS) linked_list.c -o linked_list_app -I. $(LDFLAGS)
+# Target to build the linked list application with main.c
+list: main.o linked_list.o
+	$(CC) main.o linked_list.o -o linked_list_app -I. $(LDFLAGS)
 
-# Build all: memory manager and linked list application
+# Default target builds both the library and application
 all: mmanager list
 
 # Object files for memory_manager
@@ -20,6 +20,10 @@ memory_manager.o: memory_manager.c memory_manager.h
 # Object files for linked_list
 linked_list.o: linked_list.c linked_list.h
 	$(CC) $(CFLAGS) -c linked_list.c
+
+# Object file for main (with main function)
+main.o: main.c
+	$(CC) $(CFLAGS) -c main.c
 
 # Clean up generated files
 clean:
